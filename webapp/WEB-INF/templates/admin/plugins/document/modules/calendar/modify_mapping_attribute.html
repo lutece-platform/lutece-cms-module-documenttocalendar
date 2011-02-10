@@ -1,0 +1,41 @@
+<div class="content-box" >
+	<#if mapping_attribute.idDocumentAttribute = -1>
+		<h2>#i18n{module.document.calendar.modifyMappingAtribute.titleMappingAttributeInformation} "#i18n{${mapping_attribute.documentFeature}}" #i18n{module.document.calendar.modifyMappingAtribute.titleMappingInformation} "${mapping.documentTypeName}"</h2> 
+	<#else>
+		<h2>#i18n{module.document.calendar.modifyMappingAtribute.titleMappingAttributeInformation} "${mapping_attribute.documentAttributeDescription}" #i18n{module.document.calendar.modifyMappingAtribute.titleMappingInformation} "${mapping.documentTypeName}"</h2> 
+	</#if> 
+	<form method="post" action="jsp/admin/plugins/document/modules/calendar/DoModifyMappingAttribute.jsp">
+		<input name="mapping_attribute_id" value="${mapping_attribute.id}" type="hidden">
+		<p>
+			<label>#i18n{module.document.calendar.modifyMappingAtribute.documentAttribute} : </label>
+			<#if mapping_attribute.idDocumentAttribute = -1>
+				#i18n{${mapping_attribute.documentFeature}}
+	      	<#else>
+				${mapping_attribute.documentAttributeDescription}
+			</#if> 
+		</p>
+		<p>
+			<label>#i18n{module.document.calendar.modifyMappingAtribute.calendarAttribute} : </label>
+			<#if calendar_attribute_list?has_content>
+				<select name="calendar_attr_id">
+					<option value="-1">&nbsp;</option>
+					<#list calendar_attribute_list as calendar_attribute>
+						<#if mapping_attribute.idCalendarAttribute = calendar_attribute.id>
+							<option selected value="${calendar_attribute.id}">#i18n{${calendar_attribute.calendarAttributeLabel}}</option>
+						<#else>
+							<option value="${calendar_attribute.id}">#i18n{${calendar_attribute.calendarAttributeLabel}}</option>
+						</#if> 
+					</#list>
+				</select>
+			<#else>
+				#i18n{module.document.calendar.modifyMappingAtribute.emptyCalendarAttributeList}
+			</#if> 
+		</p>
+		<p>
+			<#if calendar_attribute_list?has_content>
+		      	<input type="submit" value="#i18n{module.document.calendar.modifyMapping.buttonModify}" class="button" name="modify" />
+			</#if> 
+	      	<input type="submit" value="#i18n{module.document.calendar.modifyMapping.buttonCancel}" class="button" name="cancel"/>
+	    </p>
+	</form>
+</div>

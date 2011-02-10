@@ -1,0 +1,21 @@
+<div class="content-box" >
+	<h2>  #i18n{module.document.calendar.createMapping.title}</h2>
+	<form method="post" action="jsp/admin/plugins/document/modules/calendar/DoCreateMapping.jsp">
+		<p>
+			<label>#i18n{module.document.calendar.createMapping.labelSelectCodeDocumentType} * : </label>
+			<select name="mapping_code_document_type">
+				<#list code_document_type_list as code_document_type>
+					<option value="${code_document_type.codeDocumentType}">${code_document_type.documentTypeName}</option>
+				</#list>
+			</select>
+		</p>
+		<p>
+			<label for="mapping_description">#i18n{module.document.calendar.createMapping.labelDescription} * : </label>
+			<input type="text" name="mapping_description" id="" size="80" value="" maxlength="255" />	   
+		</p>
+		<p>
+      		<input type="submit" value="#i18n{module.document.calendar.createMapping.buttonCreate}" class="button" name="create" />
+      		<input type="submit" value="#i18n{module.document.calendar.createMapping.buttonCancel}" class="button" name="cancel"/>
+    	</p>
+	</form>
+</div>

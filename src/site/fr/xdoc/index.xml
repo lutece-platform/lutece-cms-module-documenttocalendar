@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Introduction</title>
+	</properties>
+	<body>
+		<section name="Module DocumenToCalendar">
+		<p>Ce plugin permet de faire d'un document (plugin-document) un évènement dans un calendrier (plugin-calendar)</p>
+		</section>
+	</body>
+</document>

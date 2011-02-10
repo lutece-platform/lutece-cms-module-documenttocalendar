@@ -1,0 +1,39 @@
+<div class="content-box" >
+	<h2>  #i18n{module.document.calendar.manageMapping.title}</h2>
+	<table>
+    	<tr>
+      		<th>
+       			#i18n{module.document.calendar.manageMapping.rowTitle}
+      		</th>
+     		<th>
+        		#i18n{module.document.calendar.manageMapping.rowDescription}
+      		</th>
+      		<th>
+        		#i18n{module.document.calendar.manageMapping.rowActions}
+      		</th>
+    	</tr>
+		
+   		<#list mapping_list as mapping>
+	   		<tr>
+				<td>
+	      			${mapping.documentTypeName}
+	     		</td>
+	      		<td>
+	           		${mapping.description}
+	      		</td>
+	     		<td>
+	     			<a href="jsp/admin/plugins/document/modules/calendar/ModifyMapping.jsp?mapping_code_document_type=${mapping.codeDocumentType}">
+                    <img src="images/admin/skin/actions/modify.png" alt="#i18n{module.document.calendar.manageMapping.actionModify}" title="#i18n{module.document.calendar.manageMapping.actionModify}" />
+	     		
+					<a href="jsp/admin/plugins/document/modules/calendar/RemoveMapping.jsp?mapping_code_document_type=${mapping.codeDocumentType}">
+                    <img src="images/admin/skin/actions/delete.png" alt="#i18n{module.document.calendar.manageMapping.actionDelete}" title="#i18n{module.document.calendar.manageMapping.actionDelete}" />
+				</td>
+	    	</tr>
+    	</#list>
+	</table>
+	<form method="post" action="jsp/admin/plugins/document/modules/calendar/CreateMapping.jsp">
+    	<p>
+      		<input type="submit" value="#i18n{module.document.calendar.manageMapping.buttonCreate}" class="button" />
+    	</p>
+  	</form>
+</div>

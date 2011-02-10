@@ -1,0 +1,55 @@
+<div class="content-box" >
+	<h2>  #i18n{module.document.calendar.modifyMapping.titleMapping} "${mapping.documentTypeName}"</h2>
+	<p>
+		<label>#i18n{module.document.calendar.modifyMapping.documentType} : </label> ${mapping.documentTypeName}
+	</p>
+	<form method="post" action="jsp/admin/plugins/document/modules/calendar/DoModifyMapping.jsp">
+    	<input name="mapping_code_document_type" value="${mapping.codeDocumentType}" type="hidden">
+		<p>
+			<label for="mapping_description">#i18n{module.document.calendar.modifyMapping.description} * : </label>
+			<input type="text" name="mapping_description" id="" size="80" value="${mapping.description}" maxlength="255" />	   
+		</p>
+    	<p>
+      		<input type="submit" value="#i18n{module.document.calendar.modifyMapping.buttonModify}" class="button" name="modify" />
+      		<input type="submit" value="#i18n{module.document.calendar.modifyMapping.buttonCancel}" class="button" name="cancel"/>
+    	</p>
+  	</form>
+</div>
+<div class="content-box" >
+	<h2>  #i18n{module.document.calendar.modifyMapping.titleMappingAttribute}</h2>
+	<table>
+    	<tr>
+      		<th>
+       			#i18n{module.document.calendar.modifyMapping.rowDocumentAttribute}
+      		</th>
+     		<th>
+        		#i18n{module.document.calendar.modifyMapping.rowCalendarAttribute}
+      		</th>
+      		<th>
+        		#i18n{module.document.calendar.modifyMapping.rowActions}
+      		</th>
+    	</tr>
+   		<#list mapping_attribute_list as mapping_attribute>
+	   		<tr>
+				<td>
+					<#if mapping_attribute.idDocumentAttribute = -1>
+						#i18n{${mapping_attribute.documentFeature}}
+	      			<#else>
+						${mapping_attribute.documentAttributeDescription}
+					</#if> 
+	     		</td>
+	      		<td>
+					<#if mapping_attribute.idCalendarAttribute = -1>
+						&nbsp;
+	      			<#else>
+						#i18n{${mapping_attribute.calendarAttributeDescription}}
+					</#if> 
+	      		</td>
+	     		<td>
+					<a href="jsp/admin/plugins/document/modules/calendar/ModifyMappingAttribute.jsp?mapping_attribute_id=${mapping_attribute.id}">
+					<img src="images/admin/skin/actions/modify.png" alt="#i18n{module.document.calendar.manageMapping.actionModify}" title="#i18n{module.document.calendar.manageMapping.actionModify}" />
+				</td>
+	    	</tr>
+    	</#list>
+	</table>
+</div>

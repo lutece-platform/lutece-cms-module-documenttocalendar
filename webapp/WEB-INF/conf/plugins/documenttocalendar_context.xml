@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="documenttocalendar.mappingDAO"  class="fr.paris.lutece.plugins.document.modules.calendar.business.MappingDAO" />
+	<bean id="documenttocalendar.mappingAttributeDAO"  class="fr.paris.lutece.plugins.document.modules.calendar.business.MappingAttributeDAO" />
+	<bean id="documenttocalendar.calendarAttributeDAO"  class="fr.paris.lutece.plugins.document.modules.calendar.business.CalendarAttributeDAO" />
+	<bean id="documenttocalendar.documentActionsService"  class="fr.paris.lutece.plugins.document.modules.calendar.service.DocumentActionsService" />
+</beans>
