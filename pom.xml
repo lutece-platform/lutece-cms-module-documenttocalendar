@@ -51,6 +51,6 @@
     <scm>
         <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/module-documenttocalendar</connection>
         <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/module-documenttocalendar</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/portal/trunk/plugins/cms/module-documenttocalendar</url>
+        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/cms/module-documenttocalendar</url>
     </scm>
 </project>
