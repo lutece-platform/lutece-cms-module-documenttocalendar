@@ -18,9 +18,6 @@
 	    <id>lutece</id>
 	    <name>luteceRepository</name>
 	    <url>http://dev.lutece.paris.fr/maven_repository</url>
-	    <releases>
-	          <enabled>true</enabled>
-	      </releases>
 	  </repository>
 	  <repository>
 	      <id>luteceSnapshot</id>
