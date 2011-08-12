@@ -55,6 +55,7 @@
    <properties>
 		<componentName>documenttocalendar</componentName>
 		<jiraProjectName>DOCUMENTTOCALENDAR</jiraProjectName>
+		<jiraComponentId>10410</jiraComponentId>
 	</properties>
     <scm>
         <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/module-documenttocalendar</connection>
