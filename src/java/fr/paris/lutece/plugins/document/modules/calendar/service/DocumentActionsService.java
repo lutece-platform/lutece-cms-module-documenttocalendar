@@ -64,7 +64,8 @@ public class DocumentActionsService extends PluginAdminPageJspBean implements ID
     private static final String PARAMETER_BUTTON_NAME = "module.document.calendar.workflow.action.addEvent.name";
     private static final String PARAMETER_BUTTON_DESCRIPTION = "module.document.calendar.workflow.action.addEvent.description";
     private static final String PARAMETER_BUTTON_ACTION_URL = "jsp/admin/plugins/document/modules/calendar/SelectCalendar.jsp?";
-    private static final String PARAMETER_BUTTON_ICON_URL = "images/admin/skin/actions/calendar_add.png";
+   /* private static final String PARAMETER_BUTTON_ICON_URL = "images/admin/skin/actions/calendar_add.png"; */
+    private static final String PARAMETER_BUTTON_ICON_URL = "icon-calendar";
 
     /**
      * Return all actions to add to the document
