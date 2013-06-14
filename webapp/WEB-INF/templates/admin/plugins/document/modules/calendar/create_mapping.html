@@ -1,21 +1,33 @@
-<div class="content-box" >
-	<h2>  #i18n{module.document.calendar.createMapping.title}</h2>
-	<form method="post" action="jsp/admin/plugins/document/modules/calendar/DoCreateMapping.jsp">
-		<p>
-			<label>#i18n{module.document.calendar.createMapping.labelSelectCodeDocumentType} * : </label>
-			<select name="mapping_code_document_type">
-				<#list code_document_type_list as code_document_type>
-					<option value="${code_document_type.codeDocumentType}">${code_document_type.documentTypeName}</option>
-				</#list>
-			</select>
-		</p>
-		<p>
-			<label for="mapping_description">#i18n{module.document.calendar.createMapping.labelDescription} * : </label>
-			<input type="text" name="mapping_description" id="" size="80" value="" maxlength="255" />	   
-		</p>
-		<p>
-      		<input type="submit" value="#i18n{module.document.calendar.createMapping.buttonCreate}" class="button" name="create" />
-      		<input type="submit" value="#i18n{module.document.calendar.createMapping.buttonCancel}" class="button" name="cancel"/>
-    	</p>
+<div class="row-fluid">
+	<div class="span12">
+		<form class="form-horizontal" method="post" action="jsp/admin/plugins/document/modules/calendar/DoCreateMapping.jsp">
+		<fieldset>
+			<legend>#i18n{module.document.calendar.createMapping.title}</legend>
+			<div class="control-group">
+				<label class="control-label">#i18n{module.document.calendar.createMapping.labelSelectCodeDocumentType} * : </label>
+				<div class="controls">
+					<select name="mapping_code_document_type" class="input-xlarge">
+						<#list code_document_type_list as code_document_type>
+						<option value="${code_document_type.codeDocumentType}">${code_document_type.documentTypeName}</option>
+						</#list>
+					</select>
+				</div>
+			</div>	
+			<div class="control-group">
+			<label class="control-label" for="mapping_description">#i18n{module.document.calendar.createMapping.labelDescription} * : </label>
+				<div class="controls">
+					<input type="text" name="mapping_description" id="" size="80" value="" maxlength="255" />
+				</div>
+			</div>	   
+			<div class="form-actions">
+				<button class="btn btn-primary btn-small" type="submit" name="create">
+					<i class="icon-ok icon-white"></i>&nbsp;#i18n{module.document.calendar.createMapping.buttonCreate}
+				</button>
+				<a class="btn btn-small" href="jsp/admin/plugins/document/modules/calendar/ManageDocumentToCalendar.jsp?plugin_name=documenttocalendar">
+					<i class="icon-remove-circle"></i>&nbsp;#i18n{module.document.calendar.createMapping.buttonCancel}
+				</a>
+			</div>
+		</fieldset>
 	</form>
+	</div>
 </div>

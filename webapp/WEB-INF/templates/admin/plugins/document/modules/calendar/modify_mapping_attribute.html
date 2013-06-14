@@ -1,23 +1,28 @@
-<div class="content-box" >
-	<#if mapping_attribute.idDocumentAttribute = -1>
-		<h2>#i18n{module.document.calendar.modifyMappingAtribute.titleMappingAttributeInformation} "#i18n{${mapping_attribute.documentFeature}}" #i18n{module.document.calendar.modifyMappingAtribute.titleMappingInformation} "${mapping.documentTypeName}"</h2> 
-	<#else>
-		<h2>#i18n{module.document.calendar.modifyMappingAtribute.titleMappingAttributeInformation} "${mapping_attribute.documentAttributeDescription}" #i18n{module.document.calendar.modifyMappingAtribute.titleMappingInformation} "${mapping.documentTypeName}"</h2> 
-	</#if> 
-	<form method="post" action="jsp/admin/plugins/document/modules/calendar/DoModifyMappingAttribute.jsp">
+<div class="row-fluid">
+	<div class="span12">
+		<form class="form-horizontal" method="post" action="jsp/admin/plugins/document/modules/calendar/DoModifyMappingAttribute.jsp">
 		<input name="mapping_attribute_id" value="${mapping_attribute.id}" type="hidden">
-		<p>
-			<label>#i18n{module.document.calendar.modifyMappingAtribute.documentAttribute} : </label>
-			<#if mapping_attribute.idDocumentAttribute = -1>
-				#i18n{${mapping_attribute.documentFeature}}
-	      	<#else>
-				${mapping_attribute.documentAttributeDescription}
-			</#if> 
-		</p>
-		<p>
-			<label>#i18n{module.document.calendar.modifyMappingAtribute.calendarAttribute} : </label>
+		<fieldset>
+		<#if mapping_attribute.idDocumentAttribute = -1>
+			<legend>#i18n{module.document.calendar.modifyMappingAtribute.titleMappingAttributeInformation} "#i18n{${mapping_attribute.documentFeature}}" #i18n{module.document.calendar.modifyMappingAtribute.titleMappingInformation} "${mapping.documentTypeName}"</legend> 
+		<#else>
+			<legend>#i18n{module.document.calendar.modifyMappingAtribute.titleMappingAttributeInformation} "${mapping_attribute.documentAttributeDescription}" #i18n{module.document.calendar.modifyMappingAtribute.titleMappingInformation} "${mapping.documentTypeName}"</legend> 
+		</#if> 
+		<div class="control-group">
+			<label class="control-label">#i18n{module.document.calendar.modifyMappingAtribute.documentAttribute}</label>
+			<div class="controls">
+				<#if mapping_attribute.idDocumentAttribute = -1>
+					#i18n{${mapping_attribute.documentFeature}}
+				<#else>
+					${mapping_attribute.documentAttributeDescription}
+				</#if> 
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="calendar_attr_id"> #i18n{module.document.calendar.modifyMappingAtribute.calendarAttribute}</label>
+			<div class="controls">
 			<#if calendar_attribute_list?has_content>
-				<select name="calendar_attr_id">
+				<select name="calendar_attr_id" class="input-xlarge">
 					<option value="-1">&nbsp;</option>
 					<#list calendar_attribute_list as calendar_attribute>
 						<#if mapping_attribute.idCalendarAttribute = calendar_attribute.id>
@@ -30,12 +35,20 @@
 			<#else>
 				#i18n{module.document.calendar.modifyMappingAtribute.emptyCalendarAttributeList}
 			</#if> 
-		</p>
-		<p>
+			</div>
+		</div>
+		<div class="form-actions">
 			<#if calendar_attribute_list?has_content>
-		      	<input type="submit" value="#i18n{module.document.calendar.modifyMapping.buttonModify}" class="button" name="modify" />
+		      	<button class="btn btn-primary btn-small" type="submit" name="modify" >
+					<i class="icon-ok icon-white"></i>&nbsp;#i18n{module.document.calendar.modifyMapping.buttonModify}
+				</button>
 			</#if> 
-	      	<input type="submit" value="#i18n{module.document.calendar.modifyMapping.buttonCancel}" class="button" name="cancel"/>
-	    </p>
-	</form>
+			<a class="btn btn-small" href="jsp/admin/plugins/document/modules/calendar/ModifyMapping.jsp?mapping_code_document_type=${mapping.codeDocumentType}">
+				<i class="icon-remove-circle"></i>&nbsp;#i18n{module.document.calendar.modifyMapping.buttonCancel}
+			</a>
+		</div>
+	    
+			</fieldset>
+		</form>
+	</div>
 </div>

@@ -1,29 +1,27 @@
-<div class="content-box" >
-	<h2>#i18n{module.document.calendar.selectCalendar.titleSelection}</h2>
-	<form method="post" action="jsp/admin/plugins/document/modules/calendar/DoSelectCalendar.jsp">
-		<table>
-	    	<tr>
-	      		<th>
-	       			#i18n{module.document.calendar.selectCalendar.name}
-	      		</th>
-	     		<th>
-	        		#i18n{module.document.calendar.selectCalendar.choice}
-	      		</th>
-	    	</tr>
-	   		<#list calendar_list as calendar >
-		   		<tr>
-					<td>
-		      			<img src="${calendar.eventImage}" alt="${calendar.eventImage}" title="${calendar.eventImage}" /> ${calendar.name}
-		     		</td>
-		      		<td>
-		           		<input type="radio" name="calendar_id" value="${calendar.id}" />
-		      		</td>
-		    	</tr>
-	    	</#list>
-		</table>
-	    <p>
-	    	<input name="id_document" value="${id_document}" type="hidden">
-	      	<input type="submit" value="#i18n{module.document.calendar.selectCalendar.buttonAdd}" class="button" />
-	    </p>
-  	</form>
+<div class="row-fluid" >
+	<div class="span12">
+		<form class="form-horizontal" method="post" action="jsp/admin/plugins/document/modules/calendar/DoSelectCalendar.jsp">
+			<input name="id_document" value="${id_document}" type="hidden">
+			<fieldset>
+			<legend>#i18n{module.document.calendar.selectCalendar.titleSelection}</legend>
+			<div class="control-group">
+				<label class="control-label" for=""></label>
+				<div class="controls">
+				<#list calendar_list as calendar >
+					<label class="radio" for="calendar_id">
+						<input type="radio" name="calendar_id" value="${calendar.id}">
+						&nbsp;${calendar.name}&nbsp;
+						<img src="${calendar.eventImage}" alt="${calendar.eventImage}" title="${calendar.eventImage}">
+					</label>
+				</#list>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-primary btn-small" type="submit" >
+					<i class="icon-ok icon-white"></i>&nbsp;#i18n{module.document.calendar.selectCalendar.buttonAdd}
+				</button>
+			</div>
+			</fieldset>
+		</form>
+	</div>
 </div>
