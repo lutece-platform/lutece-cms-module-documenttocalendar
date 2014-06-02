@@ -64,10 +64,7 @@ import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.url.UrlItem;
 
-import org.apache.commons.fileupload.FileItem;
-
 import java.io.IOException;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -78,9 +75,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+
 
 /**
- *  This class provides the user interface to manage DocumentToCalendarJspBean
+ * This class provides the user interface to manage DocumentToCalendarJspBean
  */
 public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
 {
@@ -166,29 +165,29 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
     /**
      * Gets the main mapping management page
      * @param request The HTTP request
-     * @return The  mapping creation page
+     * @return The mapping creation page
      */
     public String getManageDocumentToCalendar( HttpServletRequest request )
     {
-        Plugin plugin = getPlugin(  );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
         setPageTitleProperty( PROPERTY_MANAGE_MAPPING_TITLE );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         List<Mapping> listMapping = MappingHome.getList( plugin );
 
         model.put( PARAMETER_MAPPING_LIST, listMapping );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_DOCUMENTTOCALENDAR, getLocale(  ),
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MANAGE_DOCUMENTTOCALENDAR, getLocale( ),
                 model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
      * Returns the page of confirmation for deleting a mapping
-     *
+     * 
      * @param request The Http Request
      * @return the confirmation url
      */
@@ -199,8 +198,8 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
         UrlItem url = new UrlItem( JSP_URL_REMOVE_MAPPING );
         url.addParameter( PARAMETER_MAPPING_CODE_DOCUMENT_TYPE, strCodeDocumentType );
 
-        return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_MAPPING, url.getUrl(  ),
-            AdminMessage.TYPE_CONFIRMATION );
+        return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_MAPPING, url.getUrl( ),
+                AdminMessage.TYPE_CONFIRMATION );
     }
 
     /**
@@ -211,7 +210,7 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
     public String doRemoveMapping( HttpServletRequest request )
     {
         String strCodeDocumentType = request.getParameter( PARAMETER_MAPPING_CODE_DOCUMENT_TYPE );
-        Plugin plugin = getPlugin(  );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
         if ( ( strCodeDocumentType == null ) )
         {
@@ -229,20 +228,20 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
     /**
      * Gets the mapping creation page
      * @param request The HTTP request
-     * @return The  mapping creation page
+     * @return The mapping creation page
      */
     public String getCreateMapping( HttpServletRequest request )
     {
-        List<Mapping> documentTypeWithoutMappingList = MappingService.getCodeDocumentTypeWithoutMapping(  );
+        List<Mapping> documentTypeWithoutMappingList = MappingService.getCodeDocumentTypeWithoutMapping( );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         model.put( MARK_CODE_DOCUMENT_TYPE_LIST, documentTypeWithoutMappingList );
         setPageTitleProperty( PROPERTY_CREATE_MAPPING_TITLE );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_CREATE_MAPPING, getLocale(  ), model );
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_CREATE_MAPPING, getLocale( ), model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
@@ -260,32 +259,33 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             if ( ( strMappingDescription == null ) || ( strMappingDescription.equals( "" ) ) )
             {
                 return AdminMessageService.getMessageUrl( request, MESSAGE_MAPPING_DESCRIPTION_ERROR,
-                    AdminMessage.TYPE_STOP );
+                        AdminMessage.TYPE_STOP );
             }
 
             if ( strCodeDocumentType == null )
             {
                 return AdminMessageService.getMessageUrl( request, MESSAGE_MAPPING_CODE_DOCUMENT_ERROR,
-                    AdminMessage.TYPE_STOP );
+                        AdminMessage.TYPE_STOP );
             }
 
-            Plugin plugin = getPlugin(  );
+            Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
-            Mapping mapping = new Mapping(  );
+            Mapping mapping = new Mapping( );
             mapping.setCodeDocumentType( strCodeDocumentType );
             mapping.setDescription( strMappingDescription );
 
             MappingHome.create( mapping, plugin );
 
-            List<DocumentAttribute> documentAttributeList = MappingService.getDocumentAttributesByCodeDocument( strCodeDocumentType );
+            List<DocumentAttribute> documentAttributeList = MappingService
+                    .getDocumentAttributesByCodeDocument( strCodeDocumentType );
 
             for ( DocumentAttribute documentAttribute : documentAttributeList )
             {
-                if ( documentAttribute.isRequired(  ) )
+                if ( documentAttribute.isRequired( ) )
                 {
-                    MappingAttribute mappingAttribute = new MappingAttribute(  );
+                    MappingAttribute mappingAttribute = new MappingAttribute( );
                     mappingAttribute.setCodeDocumentType( strCodeDocumentType );
-                    mappingAttribute.setIdDocumentAttribute( documentAttribute.getId(  ) );
+                    mappingAttribute.setIdDocumentAttribute( documentAttribute.getId( ) );
                     mappingAttribute.setIdCalendarAttribute( -1 );
                     mappingAttribute.setDocumentFeature( "" );
                     MappingAttributeHome.create( mappingAttribute, plugin );
@@ -293,7 +293,7 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             }
 
             //Add document feature title like as a mapping attribute
-            MappingAttribute mappingAttribute = new MappingAttribute(  );
+            MappingAttribute mappingAttribute = new MappingAttribute( );
             mappingAttribute.setCodeDocumentType( strCodeDocumentType );
             mappingAttribute.setIdDocumentAttribute( -1 );
             mappingAttribute.setIdCalendarAttribute( -1 );
@@ -301,15 +301,15 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             MappingAttributeHome.create( mappingAttribute, plugin );
 
             //Add document feature sumary like as a mapping attribute
-            mappingAttribute = new MappingAttribute(  );
+            mappingAttribute = new MappingAttribute( );
             mappingAttribute.setCodeDocumentType( strCodeDocumentType );
             mappingAttribute.setIdDocumentAttribute( -1 );
             mappingAttribute.setIdCalendarAttribute( -1 );
             mappingAttribute.setDocumentFeature( PARAMETER_DOCUMENT_FEATURE_SUMARY );
             MappingAttributeHome.create( mappingAttribute, plugin );
 
-            return AppPathService.getBaseUrl( request ) + JSP_URL_MODIFY_MAPPING + "?" +
-            PARAMETER_MAPPING_CODE_DOCUMENT_TYPE + "=" + strCodeDocumentType;
+            return AppPathService.getBaseUrl( request ) + JSP_URL_MODIFY_MAPPING + "?"
+                    + PARAMETER_MAPPING_CODE_DOCUMENT_TYPE + "=" + strCodeDocumentType;
         }
 
         return AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_MAPPING;
@@ -323,22 +323,23 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
     public String getModifyMapping( HttpServletRequest request )
     {
         String strCodeDocumentType = request.getParameter( PARAMETER_MAPPING_CODE_DOCUMENT_TYPE );
-        Plugin plugin = getPlugin(  );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         Mapping mapping = MappingHome.findByCodeDocumentType( strCodeDocumentType, plugin );
 
-        List<MappingAttribute> mappingAttributeList = MappingService.getDocumentMappingAttributeList( strCodeDocumentType );
+        List<MappingAttribute> mappingAttributeList = MappingService
+                .getDocumentMappingAttributeList( strCodeDocumentType );
 
         model.put( MARK_MAPPING, mapping );
         model.put( MARK_MAPPING_ATTR_LIST, mappingAttributeList );
 
         setPageTitleProperty( PROPERTY_MODIFY_MAPPING_TITLE );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MODIFY_MAPPING, getLocale(  ), model );
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MODIFY_MAPPING, getLocale( ), model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
@@ -356,10 +357,10 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             if ( ( strMappingDescription == null ) || strMappingDescription.equals( "" ) )
             {
                 return AdminMessageService.getMessageUrl( request, MESSAGE_MAPPING_DESCRIPTION_ERROR,
-                    AdminMessage.TYPE_STOP );
+                        AdminMessage.TYPE_STOP );
             }
 
-            Plugin plugin = getPlugin(  );
+            Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
             Mapping mapping = MappingHome.findByCodeDocumentType( strCodeDocumentType, plugin );
             mapping.setDescription( strMappingDescription );
             MappingHome.update( mapping, plugin );
@@ -371,21 +372,22 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
     /**
      * Gets the mapping attribute modification page
      * @param request The HTTP request
-     * @return The  mapping creation page
+     * @return The mapping creation page
      */
     public String getModifyMappingAttribute( HttpServletRequest request )
     {
         String strIdMappingAttribute = request.getParameter( PARAMETER_ID_MAPPING_ATTR );
-        Plugin plugin = getPlugin(  );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
-        MappingAttribute mappingAttribute = MappingService.getMappingAttribute( Integer.parseInt( strIdMappingAttribute ) );
+        MappingAttribute mappingAttribute = MappingService.getMappingAttribute( Integer
+                .parseInt( strIdMappingAttribute ) );
 
-        Mapping mapping = MappingHome.findByCodeDocumentType( mappingAttribute.getCodeDocumentType(  ), plugin );
+        Mapping mapping = MappingHome.findByCodeDocumentType( mappingAttribute.getCodeDocumentType( ), plugin );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
-        List<CalendarAttribute> calendarAttributeList = MappingService.getCalendarAttributeListByIdMappingAttribute( Integer.parseInt( 
-                    strIdMappingAttribute ) );
+        List<CalendarAttribute> calendarAttributeList = MappingService
+                .getCalendarAttributeListByIdMappingAttribute( Integer.parseInt( strIdMappingAttribute ) );
 
         model.put( MARK_MAPPING, mapping );
         model.put( MARK_MAPPING_ATTR, mappingAttribute );
@@ -393,10 +395,10 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
 
         setPageTitleProperty( PROPERTY_MODIFY_MAPPING_ATTRIBUTE_TITLE );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MODIFY_ATTRIBUTE_MAPPING, getLocale(  ),
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_MODIFY_ATTRIBUTE_MAPPING, getLocale( ),
                 model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
@@ -407,15 +409,15 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
     public String doModifyMappingAttribute( HttpServletRequest request )
     {
         String strIdMappingAttribute = request.getParameter( PARAMETER_ID_MAPPING_ATTR );
-        Plugin plugin = getPlugin(  );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
         if ( ( strIdMappingAttribute == null ) || strIdMappingAttribute.equals( "" ) )
         {
             return AdminMessageService.getMessageUrl( request, MESSAGE_MAPPING_ATTRIBUT_ERROR, AdminMessage.TYPE_ERROR );
         }
 
-        MappingAttribute mappingAttribute = MappingAttributeHome.findByPrimaryKey( Integer.parseInt( 
-                    strIdMappingAttribute ), plugin );
+        MappingAttribute mappingAttribute = MappingAttributeHome.findByPrimaryKey(
+                Integer.parseInt( strIdMappingAttribute ), plugin );
 
         if ( mappingAttribute == null )
         {
@@ -429,7 +431,7 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             if ( ( strIdCalendarAttribute == null ) || strIdCalendarAttribute.equals( "" ) )
             {
                 return AdminMessageService.getMessageUrl( request, MESSAGE_MAPPING_CALENDAR_ERROR,
-                    AdminMessage.TYPE_ERROR );
+                        AdminMessage.TYPE_ERROR );
             }
 
             mappingAttribute.setIdCalendarAttribute( Integer.parseInt( strIdCalendarAttribute ) );
@@ -437,15 +439,15 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
         }
 
         UrlItem url = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_URL_MODIFY_MAPPING );
-        url.addParameter( PARAMETER_MAPPING_CODE_DOCUMENT_TYPE, mappingAttribute.getCodeDocumentType(  ) );
+        url.addParameter( PARAMETER_MAPPING_CODE_DOCUMENT_TYPE, mappingAttribute.getCodeDocumentType( ) );
 
-        return url.getUrl(  );
+        return url.getUrl( );
     }
 
     /**
      * Gets the cfalendar selection page
      * @param request The HTTP request
-     * @return The  mapping creation page
+     * @return The mapping creation page
      */
     public String getSelectCalendar( HttpServletRequest request )
     {
@@ -456,17 +458,17 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
         List<AgendaResource> calendarList = CalendarHome.findAgendaResourcesList( calendarPlugin );
 
         //If there are many calendars, use the select calendar template
-        if ( calendarList.size(  ) > 1 )
+        if ( calendarList.size( ) > 1 )
         {
-            Map<String, Object> model = new HashMap<String, Object>(  );
+            Map<String, Object> model = new HashMap<String, Object>( );
 
             model.put( MARK_CALENDAR_LIST, calendarList );
             model.put( MARK_ID_DOCUMENT, strIdDocument );
             setPageTitleProperty( PROPERTY_SELECT_CALENDAR_TITLE );
 
-            HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_SELECT_CALENDAR, getLocale(  ), model );
+            HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_SELECT_CALENDAR, getLocale( ), model );
 
-            return getAdminPage( templateList.getHtml(  ) );
+            return getAdminPage( templateList.getHtml( ) );
         }
 
         //else go to create event 
@@ -497,9 +499,9 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
         {
             List<AgendaResource> calendarList = CalendarHome.findAgendaResourcesList( calendarPlugin );
 
-            if ( calendarList.size(  ) == 1 )
+            if ( calendarList.size( ) == 1 )
             {
-                strIdCalendar = calendarList.get( 0 ).getId(  );
+                strIdCalendar = calendarList.get( 0 ).getId( );
             }
             else
             {
@@ -525,13 +527,13 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             url.addParameter( MARK_ID_DOCUMENT, strIdDocument );
             url.addParameter( MARK_ID_CALENDAR, strIdCalendar );
 
-            return url.getUrl(  );
+            return url.getUrl( );
         }
     }
 
     /**
      * Returns the Event creation form
-     *
+     * 
      * @param request The Http request
      * @return Html creation form
      */
@@ -547,11 +549,11 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
 
             List<AgendaResource> calendarList = CalendarHome.findAgendaResourcesList( calendarPlugin );
 
-            strIdCalendar = calendarList.get( 0 ).getId(  ).toString(  );
+            strIdCalendar = calendarList.get( 0 ).getId( ).toString( );
         }
 
         Plugin calendarPlugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
-        Plugin plugin = getPlugin(  );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
         //The defaut number of day for the list
         int nDays = 1;
@@ -559,69 +561,71 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
         //Retrieve category list
         Collection<Category> categoryList = CategoryHome.findAll( calendarPlugin );
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
         String strBooleanTimeSpan = "TRUE";
         model.put( MARK_INTERVAL_TIME_SPAN, strBooleanTimeSpan );
         model.put( MARK_CALENDAR_ID, Integer.parseInt( strIdCalendar ) );
-        model.put( MARK_LOCALE, getLocale(  ).getLanguage(  ) );
+        model.put( MARK_LOCALE, getLocale( ).getLanguage( ) );
         model.put( MARK_INTERVAL_LIST, getIntervalList( request ) );
         model.put( MARK_NUMBER_DAYS, nDays );
         model.put( MARK_INTERVAL_LIST, getIntervalList( request ) );
-        model.put( MARK_TOP_EVENT_LIST, getTopEventList(  ) );
+        model.put( MARK_TOP_EVENT_LIST, getTopEventList( ) );
         model.put( MARK_EMAIL_NOTIFY, AppPropertiesService.getProperty( PROPERTY_EMAIL_NOTIFY ) );
         model.put( MARK_TOP_EVENT_DEFAULT, AppPropertiesService.getProperty( PROPERTY_TOP_EVENT_DEFAULT ) );
         model.put( MARK_INSERT_SERVICE_PAGE, JSP_GET_INSERT_SERVICE );
         model.put( MARK_INSERT_SERVICE_LINK_PAGE, JSP_GET_INSERT_LINK_SERVICE );
         model.put( MARK_WEBAPP_URL, AppPathService.getBaseUrl( request ) );
-        model.put( MARK_CATEGORY_LIST, new HashMap<String, Object>(  ) );
+        model.put( MARK_CATEGORY_LIST, new HashMap<String, Object>( ) );
         model.put( MARK_CATEGORY_DEFAULT_LIST, categoryList );
 
         model.put( MARK_ID_DOCUMENT, Integer.parseInt( strIdDocument ) );
 
         Document document = DocumentHome.findByPrimaryKey( Integer.parseInt( strIdDocument ) );
 
-        List<MappingAttribute> mappingAttributeList = MappingService.getDocumentMappingAttributeList( document.getCodeDocumentType(  ) );
+        List<MappingAttribute> mappingAttributeList = MappingService.getDocumentMappingAttributeList( document
+                .getCodeDocumentType( ) );
 
         for ( MappingAttribute mappingAttribute : mappingAttributeList )
         {
-            if ( mappingAttribute.getIdCalendarAttribute(  ) != -1 )
+            if ( mappingAttribute.getIdCalendarAttribute( ) != -1 )
             {
-                CalendarAttribute calendarAttribute = CalendarAttributeHome.findByKey( mappingAttribute.getIdCalendarAttribute(  ),
-                        plugin );
-                DocumentAttribute documentAttribute = DocumentAttributeHome.findByPrimaryKey( mappingAttribute.getIdDocumentAttribute(  ) );
+                CalendarAttribute calendarAttribute = CalendarAttributeHome.findByKey(
+                        mappingAttribute.getIdCalendarAttribute( ), plugin );
+                DocumentAttribute documentAttribute = DocumentAttributeHome.findByPrimaryKey( mappingAttribute
+                        .getIdDocumentAttribute( ) );
 
-                if ( mappingAttribute.getIdDocumentAttribute(  ) != -1 )
+                if ( mappingAttribute.getIdDocumentAttribute( ) != -1 )
                 {
                     //Document Attribute
-                    if ( calendarAttribute.getCalendarAttributeType(  ).equals( PARAMETER_TYPE_TEXT ) ||
-                            calendarAttribute.getCalendarAttributeType(  ).equals( PARAMETER_TYPE_NUMERICTEXT ) ||
-                            calendarAttribute.getCalendarAttributeType(  ).equals( PARAMETER_TYPE_DATE ) )
+                    if ( calendarAttribute.getCalendarAttributeType( ).equals( PARAMETER_TYPE_TEXT )
+                            || calendarAttribute.getCalendarAttributeType( ).equals( PARAMETER_TYPE_NUMERICTEXT )
+                            || calendarAttribute.getCalendarAttributeType( ).equals( PARAMETER_TYPE_DATE ) )
                     {
-                        model.put( calendarAttribute.getCalendarAttributeBookMark(  ),
-                            document.getAttribute( documentAttribute.getCode(  ) ).getTextValue(  ) );
+                        model.put( calendarAttribute.getCalendarAttributeBookMark( ),
+                                document.getAttribute( documentAttribute.getCode( ) ).getTextValue( ) );
                     }
 
-                    if ( calendarAttribute.getCalendarAttributeType(  ).equals( PARAMETER_TYPE_FILE ) )
+                    if ( calendarAttribute.getCalendarAttributeType( ).equals( PARAMETER_TYPE_FILE ) )
                     {
                         UrlItem url = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_GET_DOCUMENT_FILE );
                         url.addParameter( MARK_ID_DOCUMENT, strIdDocument );
-                        model.put( calendarAttribute.getCalendarAttributeBookMark(  ), url.getUrl(  ) );
+                        model.put( calendarAttribute.getCalendarAttributeBookMark( ), url.getUrl( ) );
                     }
                 }
                 else
                 {
                     //Document feature
-                    if ( mappingAttribute.getDocumentFeature(  ).equals( PARAMETER_DOCUMENT_FEATURE_TITLE ) )
+                    if ( mappingAttribute.getDocumentFeature( ).equals( PARAMETER_DOCUMENT_FEATURE_TITLE ) )
                     {
                         //Title
-                        model.put( calendarAttribute.getCalendarAttributeBookMark(  ), document.getTitle(  ) );
+                        model.put( calendarAttribute.getCalendarAttributeBookMark( ), document.getTitle( ) );
                     }
 
-                    if ( mappingAttribute.getDocumentFeature(  ).equals( PARAMETER_DOCUMENT_FEATURE_SUMARY ) )
+                    if ( mappingAttribute.getDocumentFeature( ).equals( PARAMETER_DOCUMENT_FEATURE_SUMARY ) )
                     {
                         //Summary
-                        model.put( calendarAttribute.getCalendarAttributeBookMark(  ), document.getSummary(  ) );
+                        model.put( calendarAttribute.getCalendarAttributeBookMark( ), document.getSummary( ) );
                     }
                 }
             }
@@ -629,9 +633,9 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
 
         setPageTitleProperty( PROPERTY_CREATE_EVENT_TITLE );
 
-        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_CREATE_EVENT, getLocale(  ), model );
+        HtmlTemplate templateList = AppTemplateService.getTemplate( TEMPLATE_CREATE_EVENT, getLocale( ), model );
 
-        return getAdminPage( templateList.getHtml(  ) );
+        return getAdminPage( templateList.getHtml( ) );
     }
 
     /**
@@ -649,13 +653,13 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             FileItem item = mRequest.getFile( PARAMETER_EVENT_IMAGE );
 
             //If this document file is not replace by another file
-            if ( item.getSize(  ) < 1 )
+            if ( item.getSize( ) < 1 )
             {
                 Document document = DocumentHome.findByPrimaryKey( Integer.parseInt( strIdDocument ) );
                 DocumentAttribute documentAttribute = document.getAttribute( PARAMETER_TYPE_FILE );
 
-                byte[] fileContent = documentAttribute.getBinaryValue(  );
-                String strMimeType = documentAttribute.getValueContentType(  );
+                byte[] fileContent = documentAttribute.getBinaryValue( );
+                String strMimeType = documentAttribute.getValueContentType( );
 
                 HttpSession session = request.getSession( true );
                 session.setAttribute( CalendarJspBean.ATTRIBUTE_MODULE_DOCUMENT_TO_CALENDAR_CONTENT_FILE, fileContent );
@@ -672,13 +676,13 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
     public ReferenceList getIntervalList( HttpServletRequest request )
     {
         StringTokenizer st = new StringTokenizer( AppPropertiesService.getProperty( PROPERTY_TIME_INTERVAL_LIST ), "," );
-        ReferenceList timeIntervalList = new ReferenceList(  );
+        ReferenceList timeIntervalList = new ReferenceList( );
 
-        while ( st.hasMoreElements(  ) )
+        while ( st.hasMoreElements( ) )
         {
-            String strIntervalName = st.nextToken(  ).trim(  );
-            String strDescription = I18nService.getLocalizedString( "calendar.interval.periodicity." + strIntervalName +
-                    ".description", getLocale(  ) );
+            String strIntervalName = st.nextToken( ).trim( );
+            String strDescription = I18nService.getLocalizedString( "calendar.interval.periodicity." + strIntervalName
+                    + ".description", getLocale( ) );
             int nDays = AppPropertiesService.getPropertyInt( "calendar.interval." + strIntervalName + ".value", 7 );
             timeIntervalList.addItem( nDays, strDescription );
         }
@@ -688,33 +692,33 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
 
     /**
      * Return the list [(0, no),(2,yes)]
-     *
+     * 
      * @return a refenceList
      */
-    private ReferenceList getTopEventList(  )
+    private ReferenceList getTopEventList( )
     {
-        ReferenceList list = new ReferenceList(  );
-        StringTokenizer st = new StringTokenizer( I18nService.getLocalizedString( PROPERTY_TOP_EVENT_LIST, getLocale(  ) ),
-                "," );
+        ReferenceList list = new ReferenceList( );
+        StringTokenizer st = new StringTokenizer(
+                I18nService.getLocalizedString( PROPERTY_TOP_EVENT_LIST, getLocale( ) ), "," );
         int i = 0;
 
-        while ( st.hasMoreElements(  ) )
+        while ( st.hasMoreElements( ) )
         {
-            list.addItem( i++, st.nextToken(  ).trim(  ) );
+            list.addItem( i++, st.nextToken( ).trim( ) );
         }
 
         return list;
     }
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      * Load the document file whose identifier is specified in request
      * @param request servlet request
      * @param response servlet response*
      * @throws IOException the io exception
      */
-    public void getFile( HttpServletRequest request, HttpServletResponse response )
-        throws IOException
+    public void getFile( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
         String strIdDocument = request.getParameter( PARAMETER_ID_DOCUMENT );
 
@@ -723,14 +727,14 @@ public class DocumentToCalendarJspBean extends PluginAdminPageJspBean
             Document document = DocumentHome.findByPrimaryKey( Integer.parseInt( strIdDocument ) );
             DocumentAttribute documentAttribute = document.getAttribute( PARAMETER_TYPE_FILE );
 
-            byte[] fileContent = documentAttribute.getBinaryValue(  );
-            String strMimeType = documentAttribute.getValueContentType(  );
-            String strname = documentAttribute.getTextValue(  );
+            byte[] fileContent = documentAttribute.getBinaryValue( );
+            String strMimeType = documentAttribute.getValueContentType( );
+            String strname = documentAttribute.getTextValue( );
 
             response.setHeader( "Content-Disposition", "attachment;filename=\"" + strname + "\"" );
             response.setContentType( strMimeType );
             response.setHeader( "Cache-Control", "must-revalidate" );
-            response.getOutputStream(  ).write( fileContent );
+            response.getOutputStream( ).write( fileContent );
         }
     }
 }

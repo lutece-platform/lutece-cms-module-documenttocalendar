@@ -33,7 +33,9 @@
  */
 package fr.paris.lutece.plugins.document.modules.calendar.business;
 
+import fr.paris.lutece.plugins.calendar.service.CalendarPlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.util.sql.DAOUtil;
 
 import java.util.ArrayList;
@@ -41,9 +43,9 @@ import java.util.List;
 
 
 /**
- *
- *class  MappingAttributeDAO
- *
+ * 
+ * class MappingAttributeDAO
+ * 
  */
 public class MappingAttributeDAO implements IMappingAttributeDAO
 {
@@ -59,14 +61,14 @@ public class MappingAttributeDAO implements IMappingAttributeDAO
      * Generates a new primary key
      * @return The new primary key
      */
-    private int newPrimaryKey(  )
+    private int newPrimaryKey( )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK );
-        daoUtil.executeQuery(  );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME ) );
+        daoUtil.executeQuery( );
 
         int nKey;
 
-        if ( !daoUtil.next(  ) )
+        if ( !daoUtil.next( ) )
         {
             // if the table is empty
             nKey = 1;
@@ -74,14 +76,14 @@ public class MappingAttributeDAO implements IMappingAttributeDAO
 
         nKey = daoUtil.getInt( 1 ) + 1;
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nKey;
     }
 
     /**
      * update record in the table.
-     *
+     * 
      * @param mappingAttribute instance of the MappingAttribute object to update
      * @param plugin the plugin
      */
@@ -89,20 +91,20 @@ public class MappingAttributeDAO implements IMappingAttributeDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
 
-        daoUtil.setInt( 1, mappingAttribute.getId(  ) );
-        daoUtil.setString( 2, mappingAttribute.getCodeDocumentType(  ) );
-        daoUtil.setInt( 3, mappingAttribute.getIdDocumentAttribute(  ) );
-        daoUtil.setInt( 4, mappingAttribute.getIdCalendarAttribute(  ) );
-        daoUtil.setString( 5, mappingAttribute.getDocumentFeature(  ) );
-        daoUtil.setInt( 6, mappingAttribute.getId(  ) );
+        daoUtil.setInt( 1, mappingAttribute.getId( ) );
+        daoUtil.setString( 2, mappingAttribute.getCodeDocumentType( ) );
+        daoUtil.setInt( 3, mappingAttribute.getIdDocumentAttribute( ) );
+        daoUtil.setInt( 4, mappingAttribute.getIdCalendarAttribute( ) );
+        daoUtil.setString( 5, mappingAttribute.getDocumentFeature( ) );
+        daoUtil.setInt( 6, mappingAttribute.getId( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Remove the Mapping attributes whose identifier is specified in parameter
-     *
+     * 
      * @param strCodeDocumentType The code of the document type
      * @param plugin the Plugin
      */
@@ -110,32 +112,32 @@ public class MappingAttributeDAO implements IMappingAttributeDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setString( 1, strCodeDocumentType );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Insert a new record in the table.
-     *
+     * 
      * @param mappingAttribute instance of the MappingAttribute object to insert
      * @param plugin the plugin
      */
     public void insert( MappingAttribute mappingAttribute, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
-        mappingAttribute.setId( newPrimaryKey(  ) );
-        daoUtil.setInt( 1, mappingAttribute.getId(  ) );
-        daoUtil.setString( 2, mappingAttribute.getCodeDocumentType(  ) );
-        daoUtil.setInt( 3, mappingAttribute.getIdDocumentAttribute(  ) );
-        daoUtil.setInt( 4, mappingAttribute.getIdCalendarAttribute(  ) );
-        daoUtil.setString( 5, mappingAttribute.getDocumentFeature(  ) );
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        mappingAttribute.setId( newPrimaryKey( ) );
+        daoUtil.setInt( 1, mappingAttribute.getId( ) );
+        daoUtil.setString( 2, mappingAttribute.getCodeDocumentType( ) );
+        daoUtil.setInt( 3, mappingAttribute.getIdDocumentAttribute( ) );
+        daoUtil.setInt( 4, mappingAttribute.getIdCalendarAttribute( ) );
+        daoUtil.setString( 5, mappingAttribute.getDocumentFeature( ) );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
      * Load the mapping attribute by mapping attribute identifier
-     *
+     * 
      * @param idKey The mapping attribute id
      * @param plugin the Plugin
      * @return an instance of mappingAttribute
@@ -145,13 +147,13 @@ public class MappingAttributeDAO implements IMappingAttributeDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
         daoUtil.setInt( 1, idKey );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         MappingAttribute mappingAttribute = null;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
-            mappingAttribute = new MappingAttribute(  );
+            mappingAttribute = new MappingAttribute( );
             mappingAttribute.setId( daoUtil.getInt( 1 ) );
             mappingAttribute.setCodeDocumentType( daoUtil.getString( 2 ) );
             mappingAttribute.setIdDocumentAttribute( daoUtil.getInt( 3 ) );
@@ -159,28 +161,28 @@ public class MappingAttributeDAO implements IMappingAttributeDAO
             mappingAttribute.setDocumentFeature( daoUtil.getString( 5 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return mappingAttribute;
     }
 
     /**
      * Load the list of MappingAttributes of a document
-     *
+     * 
      * @param strCodeDocumentType The document type code identifier
      * @param plugin The plugin
      * @return The Collection of the MappingAttribute
      */
     public List<MappingAttribute> selectDocumentMappingAttributeList( String strCodeDocumentType, Plugin plugin )
     {
-        List<MappingAttribute> mappingAttributeList = new ArrayList<MappingAttribute>(  );
+        List<MappingAttribute> mappingAttributeList = new ArrayList<MappingAttribute>( );
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_ALL_BY_DOCUMENT_TYPE, plugin );
         daoUtil.setString( 1, strCodeDocumentType );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            MappingAttribute mappingAttribute = new MappingAttribute(  );
+            MappingAttribute mappingAttribute = new MappingAttribute( );
             mappingAttribute.setId( daoUtil.getInt( 1 ) );
             mappingAttribute.setCodeDocumentType( daoUtil.getString( 2 ) );
             mappingAttribute.setIdDocumentAttribute( daoUtil.getInt( 3 ) );
@@ -190,7 +192,7 @@ public class MappingAttributeDAO implements IMappingAttributeDAO
             mappingAttributeList.add( mappingAttribute );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return mappingAttributeList;
     }

@@ -33,6 +33,7 @@
  */
 package fr.paris.lutece.plugins.document.modules.calendar.service;
 
+import fr.paris.lutece.plugins.calendar.service.CalendarPlugin;
 import fr.paris.lutece.plugins.document.business.DocumentType;
 import fr.paris.lutece.plugins.document.business.DocumentTypeHome;
 import fr.paris.lutece.plugins.document.business.attributes.DocumentAttribute;
@@ -52,10 +53,10 @@ import java.util.List;
 
 
 /**
-*
-* MappingService
-*
-*/
+ * 
+ * MappingService
+ * 
+ */
 public final class MappingService
 {
     private static final String PARAMETER_TYPE_FILE = "file";
@@ -68,24 +69,25 @@ public final class MappingService
     private static final String PLUGIN_NAME = "documenttocalendar";
 
     /** Constructor */
-    private MappingService(  )
+    private MappingService( )
     {
     }
 
     /**
-     * Return all document types from document_type which are not present in documenttocalendar_mapping
-     *
+     * Return all document types from document_type which are not present in
+     * documenttocalendar_mapping
+     * 
      * @return the list of mapping
      */
-    public static List<Mapping> getCodeDocumentTypeWithoutMapping(  )
+    public static List<Mapping> getCodeDocumentTypeWithoutMapping( )
     {
-        Plugin plugin = PluginService.getPlugin( PLUGIN_NAME );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
         List<Mapping> mappingList = MappingHome.getList( plugin );
 
-        Collection<DocumentType> documentTypeList = DocumentTypeHome.findAll(  );
+        Collection<DocumentType> documentTypeList = DocumentTypeHome.findAll( );
 
-        List<Mapping> documentTypeWithoutMappingList = new ArrayList<Mapping>(  );
+        List<Mapping> documentTypeWithoutMappingList = new ArrayList<Mapping>( );
 
         boolean bisMappingWithoutDescription;
 
@@ -95,7 +97,7 @@ public final class MappingService
 
             for ( Mapping mapping : mappingList )
             {
-                if ( mapping.getCodeDocumentType(  ).equals( documentType.getCode(  ) ) )
+                if ( mapping.getCodeDocumentType( ).equals( documentType.getCode( ) ) )
                 {
                     bisMappingWithoutDescription = false;
 
@@ -105,10 +107,10 @@ public final class MappingService
 
             if ( bisMappingWithoutDescription )
             {
-                Mapping mappingWithoutDescription = new Mapping(  );
-                mappingWithoutDescription.setCodeDocumentType( documentType.getCode(  ) );
-                mappingWithoutDescription.setDocumentTypeName( DocumentTypeHome.findByPrimaryKey( 
-                        documentType.getCode(  ) ).getName(  ) );
+                Mapping mappingWithoutDescription = new Mapping( );
+                mappingWithoutDescription.setCodeDocumentType( documentType.getCode( ) );
+                mappingWithoutDescription.setDocumentTypeName( DocumentTypeHome.findByPrimaryKey(
+                        documentType.getCode( ) ).getName( ) );
                 documentTypeWithoutMappingList.add( mappingWithoutDescription );
             }
         }
@@ -118,30 +120,30 @@ public final class MappingService
 
     /**
      * Return all attributes of a document wich are required
-     *
+     * 
      * @param strCodeDocumentType document type code
      * @return the list of DocumentAttribute
      */
     public static List<DocumentAttribute> getDocumentAttributesByCodeDocument( String strCodeDocumentType )
     {
-        DocumentType documentType = new DocumentType(  );
+        DocumentType documentType = new DocumentType( );
         documentType.setCode( strCodeDocumentType );
         DocumentAttributeHome.setDocumentTypeAttributes( documentType );
 
-        return documentType.getAttributes(  );
+        return documentType.getAttributes( );
     }
 
     /**
      * Return all attributes of a mapping
-     *
+     * 
      * @param strCodeDocumentType document type code
      * @return the list of MappingAttribute
      */
     public static List<MappingAttribute> getDocumentMappingAttributeList( String strCodeDocumentType )
     {
-        Plugin plugin = PluginService.getPlugin( PLUGIN_NAME );
-        List<MappingAttribute> mappingAttributeList = MappingAttributeHome.findDocumentMappingAttributeList( strCodeDocumentType,
-                plugin );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
+        List<MappingAttribute> mappingAttributeList = MappingAttributeHome.findDocumentMappingAttributeList(
+                strCodeDocumentType, plugin );
 
         for ( MappingAttribute mappingAttribute : mappingAttributeList )
         {
@@ -153,13 +155,13 @@ public final class MappingService
 
     /**
      * Return all datas of a mapping document attribute
-     *
+     * 
      * @param nIdMappingAttribute mapping attribute id
      * @return the mappin gAttribute
      */
     public static MappingAttribute getMappingAttribute( int nIdMappingAttribute )
     {
-        Plugin plugin = PluginService.getPlugin( PLUGIN_NAME );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
         MappingAttribute mappingAttribute = MappingAttributeHome.findByPrimaryKey( nIdMappingAttribute, plugin );
 
         getAttributeDescription( mappingAttribute );
@@ -169,63 +171,66 @@ public final class MappingService
 
     /**
      * complete the mapping attribute with descriptions for user
-     *
+     * 
      * @param mappingAttribute the mapping attribute
      */
     public static void getAttributeDescription( MappingAttribute mappingAttribute )
     {
-        Plugin plugin = PluginService.getPlugin( PLUGIN_NAME );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
 
         //If a attribute has been associated to the document attribute
-        if ( mappingAttribute.getIdCalendarAttribute(  ) != -1 )
+        if ( mappingAttribute.getIdCalendarAttribute( ) != -1 )
         {
-            CalendarAttribute calendarAttribute = CalendarAttributeHome.findByKey( mappingAttribute.getIdCalendarAttribute(  ),
-                    plugin );
-            mappingAttribute.setCalendarAttributeDescription( calendarAttribute.getCalendarAttributeLabel(  ) );
+            CalendarAttribute calendarAttribute = CalendarAttributeHome.findByKey(
+                    mappingAttribute.getIdCalendarAttribute( ), plugin );
+            mappingAttribute.setCalendarAttributeDescription( calendarAttribute.getCalendarAttributeLabel( ) );
         }
 
         //If it is a document attribute, not a document feature
-        if ( mappingAttribute.getIdDocumentAttribute(  ) != -1 )
+        if ( mappingAttribute.getIdDocumentAttribute( ) != -1 )
         {
-            DocumentAttribute documentAttribute = DocumentAttributeHome.findByPrimaryKey( mappingAttribute.getIdDocumentAttribute(  ) );
-            mappingAttribute.setDocumentAttributeDescription( documentAttribute.getDescription(  ) );
+            DocumentAttribute documentAttribute = DocumentAttributeHome.findByPrimaryKey( mappingAttribute
+                    .getIdDocumentAttribute( ) );
+            mappingAttribute.setDocumentAttributeDescription( documentAttribute.getDescription( ) );
         }
     }
 
     /**
-     * Return all CalendarAttribute which can be potentially mapped to the document attribute
-     *
+     * Return all CalendarAttribute which can be potentially mapped to the
+     * document attribute
+     * 
      * @param nIdMappingAttribute mapping attribute id
      * @return the calendar attribute list
      */
     public static List<CalendarAttribute> getCalendarAttributeListByIdMappingAttribute( int nIdMappingAttribute )
     {
-        Plugin plugin = PluginService.getPlugin( PLUGIN_NAME );
+        Plugin plugin = PluginService.getPlugin( CalendarPlugin.PLUGIN_NAME );
         MappingAttribute mappingAttribute = MappingAttributeHome.findByPrimaryKey( nIdMappingAttribute, plugin );
-        List<CalendarAttribute> calendarAttributeList = new ArrayList<CalendarAttribute>(  );
+        List<CalendarAttribute> calendarAttributeList = new ArrayList<CalendarAttribute>( );
 
         //If it is a document attribute
-        if ( mappingAttribute.getIdDocumentAttribute(  ) != -1 )
+        if ( mappingAttribute.getIdDocumentAttribute( ) != -1 )
         {
-            DocumentAttribute documentAttribute = DocumentAttributeHome.findByPrimaryKey( mappingAttribute.getIdDocumentAttribute(  ) );
+            DocumentAttribute documentAttribute = DocumentAttributeHome.findByPrimaryKey( mappingAttribute
+                    .getIdDocumentAttribute( ) );
 
-            if ( documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_URL ) ||
-                    documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_TEXT ) ||
-                    documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_NUMERICTEXT ) ||
-                    documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_INTERNALLINK ) )
+            if ( documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_URL )
+                    || documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_TEXT )
+                    || documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_NUMERICTEXT )
+                    || documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_INTERNALLINK ) )
             {
                 calendarAttributeList = CalendarAttributeHome.findByType( PARAMETER_TYPE_TEXT, plugin );
             }
-            else if ( documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_DATE ) )
+            else if ( documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_DATE ) )
             {
                 calendarAttributeList = CalendarAttributeHome.findByType( PARAMETER_TYPE_DATE, plugin );
             }
-            else if ( documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_IMAGE ) ||
-                    documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_FILE ) )
+            else if ( documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_IMAGE )
+                    || documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_FILE ) )
             {
                 calendarAttributeList = CalendarAttributeHome.findByType( PARAMETER_TYPE_FILE, plugin );
             }
-            else if ( documentAttribute.getCodeAttributeType(  ).equals( PARAMETER_TYPE_NUMERICTEXT ) )
+            else if ( documentAttribute.getCodeAttributeType( ).equals( PARAMETER_TYPE_NUMERICTEXT ) )
             {
                 calendarAttributeList = CalendarAttributeHome.findByType( PARAMETER_TYPE_NUMERICTEXT, plugin );
             }
@@ -239,16 +244,17 @@ public final class MappingService
         }
 
         //Remove the calendar Attributes already mapped
-        List<MappingAttribute> mappingAttributeList = getDocumentMappingAttributeList( mappingAttribute.getCodeDocumentType(  ) );
+        List<MappingAttribute> mappingAttributeList = getDocumentMappingAttributeList( mappingAttribute
+                .getCodeDocumentType( ) );
 
         for ( MappingAttribute mappingAttributeMapped : mappingAttributeList )
         {
-            if ( ( mappingAttributeMapped.getId(  ) != nIdMappingAttribute ) &&
-                    ( mappingAttributeMapped.getIdCalendarAttribute(  ) != -1 ) )
+            if ( ( mappingAttributeMapped.getId( ) != nIdMappingAttribute )
+                    && ( mappingAttributeMapped.getIdCalendarAttribute( ) != -1 ) )
             {
                 for ( CalendarAttribute calendarAttribute : calendarAttributeList )
                 {
-                    if ( calendarAttribute.getId(  ) == mappingAttributeMapped.getIdCalendarAttribute(  ) )
+                    if ( calendarAttribute.getId( ) == mappingAttributeMapped.getIdCalendarAttribute( ) )
                     {
                         calendarAttributeList.remove( calendarAttribute );
 
