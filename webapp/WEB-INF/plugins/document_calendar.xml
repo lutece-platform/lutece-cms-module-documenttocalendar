@@ -3,7 +3,7 @@
     <!-- Plugin Informations --> 
     <name>documenttocalendar</name>
    	<class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
-    <version>1.0.3</version>
+    <version>1.1.0-SNAPSHOT</version>
    	<description>module.document.calendar.module.description</description>
     <documentation/>
     <installation/>
