@@ -1,35 +1,39 @@
-<div class="row-fluid">
-	<div class="span12">
-		<fieldset>
-			<legend>
-				#i18n{module.document.calendar.manageMapping.title}
-				<form class="form-inline pull-right" method="post" action="jsp/admin/plugins/document/modules/calendar/CreateMapping.jsp">
-					<button class="btn btn-primary btn-small" type="submit">
-						<i class="icon-plus icon-white"></i>&nbsp;#i18n{module.document.calendar.manageMapping.buttonCreate}
-					</button>
-				</form>
-			</legend>
-			<table class="table table-striped table-condensed">
-			<tr>
-				<th>#i18n{module.document.calendar.manageMapping.rowTitle}</th>
-				<th>#i18n{module.document.calendar.manageMapping.rowDescription}</th>
-				<th>#i18n{module.document.calendar.manageMapping.rowActions}</th>
-			</tr>
-			<#list mapping_list as mapping>
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="box box-solid box-primary">
+			<div class="box-header">
+				<h3 class="box-title">#i18n{module.document.calendar.manageMapping.title}</h3>
+				<div class="box-tools pull-right">
+					<form class="form-inline" method="post" action="jsp/admin/plugins/document/modules/calendar/CreateMapping.jsp">
+						<button class="btn btn-primary btn-xs btn-flat" type="submit">
+							<i class="fa fa-plus"></i>&nbsp;#i18n{module.document.calendar.manageMapping.buttonCreate}
+						</button>
+					</form>
+				</div>
+            </div>
+            <div class="box-body table-responsive">
+				<table class="table table-hover table-condensed">
 				<tr>
-					<td>${mapping.documentTypeName}</td>
-					<td>${mapping.description}</td>
-					<td>
-						<a class="btn btn-primary btn-small" href="jsp/admin/plugins/document/modules/calendar/ModifyMapping.jsp?mapping_code_document_type=${mapping.codeDocumentType}">
-							<i class="icon-edit icon-white" title="#i18n{module.document.calendar.manageMapping.actionModify}"></i>
-						</a>
-						<a class="btn btn-danger btn-small" href="jsp/admin/plugins/document/modules/calendar/RemoveMapping.jsp?mapping_code_document_type=${mapping.codeDocumentType}" title="#i18n{module.document.calendar.manageMapping.actionDelete}">
-							<i class="icon-trash icon-white"></i>
-						</a>
-					</td>
+					<th>#i18n{module.document.calendar.manageMapping.rowTitle}</th>
+					<th>#i18n{module.document.calendar.manageMapping.rowDescription}</th>
+					<th>#i18n{module.document.calendar.manageMapping.rowActions}</th>
 				</tr>
-			</#list>
-			</table>
-		</fieldset>
+				<#list mapping_list as mapping>
+					<tr>
+						<td>${mapping.documentTypeName}</td>
+						<td>${mapping.description}</td>
+						<td>
+							<a class="btn btn-primary btn-xs btn-flat" href="jsp/admin/plugins/document/modules/calendar/ModifyMapping.jsp?mapping_code_document_type=${mapping.codeDocumentType}">
+								<i class="fa fa-pencil" title="#i18n{module.document.calendar.manageMapping.actionModify}"></i>
+							</a>
+							<a class="btn btn-danger btn-xs btn-flat" href="jsp/admin/plugins/document/modules/calendar/RemoveMapping.jsp?mapping_code_document_type=${mapping.codeDocumentType}" title="#i18n{module.document.calendar.manageMapping.actionDelete}">
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</#list>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
