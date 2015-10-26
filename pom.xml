@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>module-documenttocalendar</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.1</version>
     <name>Lutece document to calendar module</name>
 
     <repositories>
@@ -56,7 +56,7 @@
         <connection>scm:git:https://github.com/lutece-platform/lutece-cms-module-documenttocalendar.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-cms-module-documenttocalendar.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-cms-module-documenttocalendar.git</url>
-      <tag>HEAD</tag>
+      <tag>lutece-cms-module-documenttocalendar-1.2.1</tag>
   </scm>
     
 </project>
